@@ -1,5 +1,3 @@
 {
-  # Add your overlays here
-  #
-  # my-overlay = import ./my-overlay;
+  grub2-argon2 = import ./grub;
 }
