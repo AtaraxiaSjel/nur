@@ -15,7 +15,15 @@
     in
     {
       packages = forAllSystems (system: import ./default.nix {
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          config = { allowUnfree = true; };
+        };
       });
     };
+
+  nixConfig = {
+    extra-substituters = ["https://ataraxiadev-foss.cachix.org"];
+    extra-trusted-public-keys = ["ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="];
+  };
 }
