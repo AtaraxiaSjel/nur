@@ -34,7 +34,7 @@ let
 
   outputsOf = p: map (o: p.${o}) p.outputs;
 
-  nurAttrs = import ./packages.nix { inherit pkgs; };
+  nurAttrs = import ./pkgs/default.nix { inherit pkgs; };
 
   nurPkgs =
     flattenPkgs
