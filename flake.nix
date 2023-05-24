@@ -14,7 +14,7 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
-      packages = forAllSystems (system: import ./default.nix {
+      packages = forAllSystems (system: import ./packages.nix {
         pkgs = import nixpkgs {
           inherit system;
           config = { allowUnfree = true; };
