@@ -14,6 +14,7 @@ with pkgs; with lib; {
   protonhax = callPackage ./pkgs/protonhax { };
   reshade-shaders = callPackage ./pkgs/reshade-shaders { };
   seadrive-fuse = callPackage ./pkgs/seadrive-fuse { };
+  very-good-cli = callPackage ./pkgs/very-good-cli { };
   waydroid-script = callPackage ./pkgs/waydroid-script { };
 
   inherit (callPackage ./pkgs/rosepine-gtk {}) rosepine-gtk-theme rosepine-gtk-icons;

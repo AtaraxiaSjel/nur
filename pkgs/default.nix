@@ -13,6 +13,7 @@ with pkgs; with lib; {
   proton-ge = callPackage ./proton-ge { };
   protonhax = callPackage ./protonhax { };
   reshade-shaders = callPackage ./reshade-shaders { };
+  very-good-cli = callPackage ./very-good-cli { };
   seadrive-fuse = callPackage ./seadrive-fuse { };
   waydroid-script = callPackage ./waydroid-script { };
 
