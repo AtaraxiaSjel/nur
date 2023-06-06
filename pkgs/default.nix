@@ -9,6 +9,7 @@ with pkgs; with lib; {
   arkenfox-userjs = callPackage ./arkenfox-userjs { };
   bibata-cursors-tokyonight = callPackage ./bibata-cursors-tokyonight { };
   ceserver = callPackage ./ceserver { };
+  dart-frog-cli = callPackage ./dart-frog-cli { };
   mpris-ctl = callPackage ./mpris-ctl { };
   proton-ge = callPackage ./proton-ge { };
   protonhax = callPackage ./protonhax { };
