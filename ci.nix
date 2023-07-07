@@ -36,15 +36,18 @@ let
 
   nurAttrs = import ./pkgs/default.nix { inherit pkgs; };
 
+  pkgsAttrNames = (filter (n: !isReserved n) (attrNames nurAttrs));
+
   nurPkgs =
     flattenPkgs
       (listToAttrs
-        (map (n: nameValuePair n nurAttrs.${n})
-          (filter (n: !isReserved n)
-            (attrNames nurAttrs))));
+        (map (n: nameValuePair n nurAttrs.${n}) pkgsAttrNames));
 
 in
 rec {
+  # TODO: recurse into roundcubePlugins
+  allPkgs = (filter (n: n != "roundcubePlugins") pkgsAttrNames);
+  
   buildPkgs = filter isBuildable nurPkgs;
   cachePkgs = filter isCacheable buildPkgs;
 
