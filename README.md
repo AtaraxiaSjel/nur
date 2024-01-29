@@ -8,6 +8,8 @@
 
 ## Modules
 
+* [authentik](https://goauthentik.io/), open-source Identity Provider focused on flexibility and versatility. Available as [services.authentik](modules/authentik.nix).
+
 * [ocis](https://owncloud.dev/ocis/), ownCloud Infinite Scale - the modern file-sync and share platform. Available as [services.ocis](modules/ocis.nix).
 Package [ocis-bin](pkgs/ocis-bin/) included in this repo. Until [#230190](https://github.com/NixOS/nixpkgs/issues/230190) not resolved ocis-bin derivation pulls pre-built binary from [ocis repo](https://github.com/owncloud/ocis).
 
