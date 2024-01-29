@@ -11,7 +11,7 @@ with pkgs; with lib; {
   ceserver = callPackage ./ceserver { };
   gruvbox-plus-icons = callPackage ./gruvbox-plus-icons { };
   hoyolab-daily-bot = callPackage ./hoyolab-daily-bot { };
-  minio-kes = callPackage ./minio-kes { };
+  kes = callPackage ./kes { };
   mpris-ctl = callPackage ./mpris-ctl { };
   ocis-bin = callPackage ./ocis-bin { };
   proton-ge = callPackage ./proton-ge { };
