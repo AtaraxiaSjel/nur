@@ -14,6 +14,7 @@ rec {
   gruvbox-plus-icons = pkgs.callPackage ./gruvbox-plus-icons { };
   hoyolab-daily-bot = pkgs.callPackage ./hoyolab-daily-bot { };
   kes = pkgs.callPackage ./kes { };
+  koboldcpp = pkgs.callPackage ./koboldcpp { customtkinter = python3Packages.customtkinter; };
   mpris-ctl = pkgs.callPackage ./mpris-ctl { };
   ocis-bin = pkgs.callPackage ./ocis-bin { };
   proton-ge = pkgs.callPackage ./proton-ge { };
@@ -28,4 +29,5 @@ rec {
   inherit (pkgs.callPackage ./rosepine-gtk {}) rosepine-gtk-theme rosepine-gtk-icons;
   inherit (pkgs.callPackage ./tokyonight-gtk {}) tokyonight-gtk-theme tokyonight-gtk-icons;
   roundcubePlugins = pkgs.recurseIntoAttrs (pkgs.callPackages ./roundcube-plugins { });
+  python3Packages = pkgs.recurseIntoAttrs (pkgs.callPackages ./python3Packages { });
 }
