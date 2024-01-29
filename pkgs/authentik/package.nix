@@ -1,14 +1,16 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, buildNpmPackage
-, buildGoModule
-, runCommand
-, openapi-generator-cli
-, nodejs
-, python3
-, codespell
-, makeWrapper }:
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  buildNpmPackage,
+  buildGoModule,
+  runCommand,
+  openapi-generator-cli,
+  nodejs,
+  python3,
+  codespell,
+  makeWrapper,
+}:
 
 let
   version = "2023.10.6";
@@ -67,7 +69,7 @@ let
     pname = "authentik-webui";
     inherit version;
 
-    src = runCommand "authentik-webui-source" {} ''
+    src = runCommand "authentik-webui-source" { } ''
       mkdir -p $out/web/node_modules/@goauthentik/
       cp -r ${src}/web $out/
       ln -s ${src}/website $out/
@@ -207,8 +209,8 @@ let
 
     subPackages = [ "cmd/server" ];
   };
-
-in stdenvNoCC.mkDerivation {
+in
+stdenvNoCC.mkDerivation {
   pname = "authentik";
   inherit src version;
 
@@ -228,7 +230,12 @@ in stdenvNoCC.mkDerivation {
     cp -r lifecycle/ak $out/bin/
 
     wrapProgram $out/bin/ak \
-      --prefix PATH : ${lib.makeBinPath [ (python.withPackages (ps: [ps.authentik-django])) proxy ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          (python.withPackages (ps: [ ps.authentik-django ]))
+          proxy
+        ]
+      } \
       --set TMPDIR /dev/shm \
       --set PYTHONDONTWRITEBYTECODE 1 \
       --set PYTHONUNBUFFERED 1

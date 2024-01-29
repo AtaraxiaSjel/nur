@@ -1,5 +1,5 @@
-{ callPackage }:
+{ callPackage, authentik }:
 
 {
-  ldap = callPackage ./ldap.nix { };
+  ldap = callPackage ./ldap.nix { inherit authentik; };
 }
