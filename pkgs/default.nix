@@ -7,6 +7,8 @@ with pkgs; with lib; {
 
   a2ln = python3Packages.callPackage ./a2ln { };
   arkenfox-userjs = callPackage ./arkenfox-userjs { };
+  authentik = callPackage ./authentik/package.nix { };
+  authentik-outposts = recurseIntoAttrs (callPackages ./authentik/outposts.nix { });
   bibata-cursors-tokyonight = callPackage ./bibata-cursors-tokyonight { };
   ceserver = callPackage ./ceserver { };
   gruvbox-plus-icons = callPackage ./gruvbox-plus-icons { };
