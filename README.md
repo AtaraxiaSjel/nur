@@ -18,6 +18,9 @@ Disables NixOS's homepage-dashboard service.
 * [ocis](https://owncloud.dev/ocis/), ownCloud Infinite Scale - the modern file-sync and share platform. Available as [services.ocis](modules/ocis.nix).
 Package [ocis-bin](pkgs/ocis-bin/) included in this repo. Until [#230190](https://github.com/NixOS/nixpkgs/issues/230190) not resolved ocis-bin derivation pulls pre-built binary from [ocis repo](https://github.com/owncloud/ocis).
 
+* [rustic](https://github.com/rustic-rs/rustic), rustic - fast, encrypted, and deduplicated backups powered by Rust. Available as [services.rustic](modules/rustic.nix).
+Usage [example](https://github.com/AtaraxiaSjel/nixos-config/tree/master/machines/Home-Hypervisor/backups.nix)
+
 ## Overlays
 
 * [default](overlays/default.nix), default overlays that includes all [packages](pkgs/) from this nur repo.
