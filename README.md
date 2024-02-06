@@ -29,9 +29,9 @@ Usage [example](https://github.com/AtaraxiaSjel/nixos-config/tree/master/machine
 
 * [default](overlays/default.nix), default overlays that includes all [packages](pkgs/) from this nur repo.
 
-* [grub2-unstable](overlays/grub2-unstable/), grub2 with argon2 patches from aur. Tested on my [home-hypervisor](https://github.com/AtaraxiaSjel/nixos-config/tree/master/machines/Home-Hypervisor) machine.
+* [grub2-argon2](overlays/grub2-23.05/), grub2 v2.06 with argon2 patches. Tested on my [home-hypervisor](https://github.com/AtaraxiaSjel/nixos-config/tree/master/machines/Home-Hypervisor) machine.
 
-* [grub2-23.05](overlays/grub2-23.05/), like previous overlay but for old nixos-23.05 version.
+* [grub2-unstable-argon2](overlays/grub2-unstable/), upstream version of grub2 with argon2 patches from aur. Untested.
 
 ## Packages
 
