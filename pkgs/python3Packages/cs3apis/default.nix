@@ -6,7 +6,7 @@
   setuptools,
   setuptools-scm,
   grpcio,
-  nix-update-script,
+  # nix-update-script,
 }:
 
 buildPythonPackage rec {
@@ -27,7 +27,9 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ grpcio ];
 
-  passthru.updateScript = nix-update-script { };
+  # TODO: fix version detection for v2
+  # passthru.updateScript = nix-update-script { };
+  passthru.skipBulkUpdate = true;
 
   meta = with lib; {
     homepage = "https://github.com/cs3org/python-cs3apis/";
