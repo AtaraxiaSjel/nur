@@ -149,5 +149,6 @@ effectiveStdenv.mkDerivation {
     license = licenses.agpl3Only;
     platforms = platforms.linux;
     maintainers = with maintainers; [ ataraxiasjel ];
+    mainProgram = "koboldcpp";
   };
 }
