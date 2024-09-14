@@ -35,7 +35,7 @@ jobs:
         GIT_AUTHOR_EMAIL: ataraxiasjel@users.noreply.github.com
         GIT_COMMITTER_NAME: AtaraxiaSjel (bot)
         GIT_COMMITTER_EMAIL: ataraxiasjel@users.noreply.github.com
-        GITHUB_TOKEN=: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NIXPKGS_ALLOW_UNFREE: 1
         NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1
       timeout-minutes: 30
