@@ -13,7 +13,7 @@ let
   finalOverlay = nurOverlay pkgsWithNur pkgs;
 
   nurOverlay = final: prev: {
-    a2ln = pkgs.python3Packages.callPackage ./a2ln { };
+    a2ln = final.python3Packages.callPackage ./a2ln { };
     arkenfox-userjs = final.callPackage ./arkenfox-userjs { };
     authentik = final.callPackage ./authentik/package.nix { };
     authentik-outposts = final.recurseIntoAttrs (final.callPackages ./authentik/outposts.nix { });
