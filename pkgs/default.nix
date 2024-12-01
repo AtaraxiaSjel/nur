@@ -19,6 +19,7 @@ let
     authentik-outposts = final.recurseIntoAttrs (final.callPackages ./authentik/outposts.nix { });
     bibata-cursors-tokyonight = final.callPackage ./bibata-cursors-tokyonight { };
     ceserver = final.callPackage ./ceserver { };
+    gamma-launcher = final.python3Packages.callPackage ./gamma-launcher { };
     gruvbox-plus-icons = final.callPackage ./gruvbox-plus-icons { };
     hoyolab-claim-bot = final.callPackage ./hoyolab-claim-bot { };
     json-liquid-rs = final.callPackage ./json-liquid-rs { };
