@@ -9,16 +9,16 @@
 
 buildGoModule rec {
   pname = "superfile";
-  version = "1.1.7.1";
+  version = "1.2.0.0";
 
   src = fetchFromGitHub {
     owner = "MHNightCat";
     repo = "superfile";
     rev = "v${version}";
-    hash = "sha256-v7EfMgOsc6FSGIjYkF+44t0wl34WFmokOtzNOAOneBc=";
+    hash = "sha256-cbDfo+2rwNk4s/YhKhyQvpI4T9CseGyWGtc55ofyBT0=";
   };
 
-  vendorHash = "sha256-MdOdQQZhiuOJtnj5n1uVbJV6KIs0aa1HLZpFmvxxsWY=";
+  vendorHash = "sha256-I/x2iB/DY5vIrhq54f843iqLc/tFD+ov1AFZvUrh49E=";
 
   nativeBuildInputs = [ makeWrapper ];
 
