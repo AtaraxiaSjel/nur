@@ -33,7 +33,7 @@ let
   isReserved = n: n == "lib" || n == "overlays" || n == "modules";
   isDerivation = p: isAttrs p && p ? type && p.type == "derivation";
   isNotBroken = p: !(p.meta.broken or false);
-  isBuildable = p: isNotBroken p && p.meta.license.free or true;
+  isFree = p: p.meta.license.free or true;
   isCacheable = p: !(p.meta.preferLocalBuild or false);
   isUpdatable =
     p:
@@ -96,16 +96,16 @@ rec {
 
   allDrvs = nurPkgs;
   buildDrvs = filter isNotBroken nurPkgs;
-  freeDrvs = filter isBuildable buildDrvs;
-  cacheDrvs = filter isCacheable freeDrvs;
+  cacheDrvs = filter isCacheable buildDrvs;
+  freeDrvs = filter isFree buildDrvs;
 
   allOutputs = concatMap outputsOf allDrvs;
   buildOutputs = concatMap outputsOf buildDrvs;
-  freeOutputs = concatMap outputsOf freeDrvs;
   cacheOutputs = concatMap outputsOf cacheDrvs;
+  freeOutputs = concatMap outputsOf freeDrvs;
 
   allPkgs = listToAttrs (map (p: nameValuePair p.pname p) allOutputs);
   buildPkgs = listToAttrs (map (p: nameValuePair p.pname p) buildOutputs);
-  freePkgs = listToAttrs (map (p: nameValuePair p.pname p) freeOutputs);
   cachePkgs = listToAttrs (map (p: nameValuePair p.pname p) cacheOutputs);
+  freePkgs = listToAttrs (map (p: nameValuePair p.pname p) freeOutputs);
 }
