@@ -14,20 +14,14 @@
 }:
 
 let
-  inherit (pkgs.lib)
-    flatten
-    mapAttrsToList
-    nameValuePair
-    filterAttrs
-    ;
+  inherit (pkgs.lib) filterAttrs nameValuePair;
   inherit (builtins)
-    isAttrs
     attrNames
     attrValues
-    mapAttrs
-    filter
-    listToAttrs
     concatMap
+    filter
+    isAttrs
+    listToAttrs
     ;
 
   isReserved = n: n == "lib" || n == "overlays" || n == "modules";
@@ -43,59 +37,37 @@ let
 
   shouldRecurseForDerivations = p: isAttrs p && p.recurseForDerivations or false;
 
-  flattenPkgs =
-    s:
-    let
-      f =
-        p:
-        if shouldRecurseForDerivations p then
-          flattenPkgs p
-        else if isDerivation p then
-          [ p ]
-        else
-          [ ];
-    in
-    concatMap f (attrValues s);
-
   flattenAttrs =
-    s:
+    func: attrs:
     let
-      f =
-        _n: v:
-        filterEmptyAttrs (
-          if shouldRecurseForDerivations v then
-            flattenAttrs v
-          else if isUpdatable v then
-            v
-          else
-            { }
-        );
+      op =
+        acc: n:
+        let
+          v = attrs.${n};
+          x =
+            if shouldRecurseForDerivations v then
+              flattenAttrs func v
+            else if func v then
+              { ${n} = v; }
+            else
+              { };
+        in
+        acc // x;
     in
-    mapAttrs f s;
-
-  recursiveAttrNames =
-    s:
-    let
-      f = n: v: if isAttrs v && !isDerivation v then map (v: "${n}.${v}") (mapAttrsToList f v) else n;
-    in
-    flatten (mapAttrsToList f s);
+    pkgs.lib.foldl' op { } (pkgs.lib.attrNames attrs);
 
   outputsOf = p: map (o: p.${o}) p.outputs;
-
   nurAttrs = import ./pkgs/default.nix { inherit pkgs; };
-
-  pkgsAttrNames = (filter (n: !isReserved n) (attrNames nurAttrs));
-
-  nurPkgs = flattenPkgs (listToAttrs (map (n: nameValuePair n nurAttrs.${n}) pkgsAttrNames));
-
-  filterEmptyAttrs = set: filterAttrs (_: v: v != { }) set;
+  nurPkgs = flattenAttrs isDerivation nurAttrs;
+  nurDrvs = attrValues nurPkgs;
 in
 rec {
-  updatablePkgs = filterEmptyAttrs (flattenAttrs nurAttrs);
-  updatablePkgsNames = recursiveAttrNames updatablePkgs;
+  notReserved = filterAttrs (n: _: !(isReserved n)) nurAttrs;
+  updatablePkgs = flattenAttrs isUpdatable nurAttrs;
+  updatablePkgsNames = attrNames updatablePkgs;
 
-  allDrvs = nurPkgs;
-  buildDrvs = filter isNotBroken nurPkgs;
+  allDrvs = nurDrvs;
+  buildDrvs = filter isNotBroken nurDrvs;
   cacheDrvs = filter isCacheable buildDrvs;
   freeDrvs = filter isFree buildDrvs;
 
