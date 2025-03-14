@@ -45,7 +45,8 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  passthru.updateScript = ./update.py;
+  # passthru.updateScript = ./update.py;
+  passthru.skipBulkUpdate = true;
 
   meta = with lib; {
     description = "ownCloud Infinite Scale Stack";
