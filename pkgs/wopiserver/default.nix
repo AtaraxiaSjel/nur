@@ -4,7 +4,6 @@
   fetchFromGitHub,
   replaceVars,
   setuptools,
-  cs3apis,
   cs3client,
   cygrpc,
   flask,
@@ -16,8 +15,6 @@
   pyopenssl,
   requests,
   waitress,
-  werkzeug,
-  zipp,
   nix-update-script,
 }:
 buildPythonApplication rec {
@@ -51,7 +48,6 @@ buildPythonApplication rec {
   build-system = [ setuptools ];
 
   dependencies = [
-    # cs3apis
     cs3client
     cygrpc
     flask
@@ -63,8 +59,6 @@ buildPythonApplication rec {
     pyopenssl
     requests
     waitress
-    # werkzeug
-    # zipp
   ];
 
   doCheck = false;

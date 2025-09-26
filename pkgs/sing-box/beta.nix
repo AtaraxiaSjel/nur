@@ -60,7 +60,7 @@ buildGoModule (finalAttrs: {
         "--version"
         "unstable"
         "--version-regex"
-        "v(.*beta.*)"
+        "v(.*-(?:alpha|beta|rc).*)"
       ];
     };
     tests = { inherit (nixosTests) sing-box; };
