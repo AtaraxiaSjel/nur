@@ -49,6 +49,7 @@ in
         User = cfg.user;
         Group = cfg.group;
 
+        ReadOnlyPaths = [ cfg.configFile ];
         ReadWritePaths = [ stateDir ];
         StateDirectory = "telemt";
         WorkingDirectory = stateDir;
