@@ -10,8 +10,8 @@ let
   stateDir = "/var/lib/telemt";
 in
 {
-  options.services.syncyomi = {
-    enable = mkEnableOption "Synchronize Tachiyomi across multiple devices";
+  options.services.telemt = {
+    enable = mkEnableOption "MTProxy for Telegram on Rust + Tokio";
     package = mkPackageOption pkgs "telemt" { };
 
     configFile = mkOption {
