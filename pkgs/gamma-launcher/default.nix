@@ -1,38 +1,35 @@
 {
   lib,
-  buildPythonApplication,
+  python3Packages,
+  _7zz,
   fetchFromGitHub,
-  pythonOlder,
-  setuptools,
-  beautifulsoup4,
-  cloudscraper,
-  gitpython,
-  platformdirs,
-  py7zr,
-  python-unrar,
-  requests,
-  tenacity,
-  tqdm,
-  unrar,
-  nix-update-script,
+  versionCheckHook,
+  writableTmpDirAsHomeHook,
+  runCommand,
 }:
-buildPythonApplication rec {
-  pname = "gamma-launcher";
-  version = "2.6";
-  pyproject = true;
 
-  disabled = pythonOlder "3.10";
+let
+  # gamma-launcher looks for the "7z", not "7zz"
+  _7z = runCommand "7z" { } ''
+    mkdir -p $out/bin
+    ln -s ${_7zz}/bin/7zz $out/bin/7z
+  '';
+in
+python3Packages.buildPythonApplication (finalAttrs: {
+  pname = "gamma-launcher";
+  version = "3.0";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "Mord3rca";
-    repo = pname;
-    rev = "v${version}";
-    hash = "sha256-QegptRWMUKpkzsHBdT6KlyyWpmrIuvcyCRvWT9Te3DQ=";
+    repo = "gamma-launcher";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-bvlNmpl2L9MAhZMyHwosXrypH1CQrSI1RQwo+sXO7/w=";
   };
 
-  build-system = [ setuptools ];
+  build-system = [ python3Packages.setuptools ];
 
-  dependencies = [
+  dependencies = with python3Packages; [
     beautifulsoup4
     cloudscraper
     gitpython
@@ -44,16 +41,33 @@ buildPythonApplication rec {
     tqdm
   ];
 
-  makeWrapperArgs = [ "--set UNRAR_LIB_PATH ${unrar}/lib/libunrar.so" ];
+  nativeCheckInputs = [
+    versionCheckHook
+    writableTmpDirAsHomeHook
+  ];
+  versionCheckKeepEnvironment = [ "HOME" ];
+  doInstallCheck = true;
 
-  passthru.updateScript = nix-update-script { };
+  postFixup = ''
+    wrapProgram $out/bin/gamma-launcher \
+    --prefix PATH : "${
+      lib.makeBinPath [
+        _7z
+      ]
+    }"
+  '';
 
-  meta = with lib; {
-    description = "Just another Launcher to setup S.T.A.L.K.E.R.: G.A.M.M.A.";
+  meta = {
+    description = "Python cli to download S.T.A.L.K.E.R. GAMMA";
+    changelog = "https://github.com/Mord3rca/gamma-launcher/releases/tag/v${finalAttrs.version}";
     homepage = "https://github.com/Mord3rca/gamma-launcher";
-    license = licenses.gpl3;
-    platforms = platforms.linux;
-    maintainers = with maintainers; [ ataraxiasjel ];
     mainProgram = "gamma-launcher";
+    license = lib.licenses.gpl3Plus;
+    maintainers = with lib.maintainers; [
+      DrymarchonShaun
+      bbigras
+      ataraxiasjel
+    ];
+    platforms = lib.platforms.linux;
   };
-}
+})
