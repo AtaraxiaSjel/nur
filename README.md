@@ -19,6 +19,8 @@ Disables NixOS's homepage-dashboard service.
 
 * [kes](https://github.com/minio/kes), Key Managament Server for Object Storage and more. Available as [services.kes](modules/kes.nix).
 
+* [mcp-gateway](https://github.com/MikkoParkkola/mcp-gateway), Universal MCP Gateway - single-port multiplexing with Meta-MCP for ~95% context token savings. Available as [services.mcp-gateway](modules/mcp-gateway.nix).
+
 * [ocis](https://owncloud.dev/ocis/), ownCloud Infinite Scale - the modern file-sync and share platform. Available as [services.ocis](modules/ocis.nix).
 Package [ocis-bin](pkgs/ocis-bin/) included in this repo. Until [#230190](https://github.com/NixOS/nixpkgs/issues/230190) not resolved ocis-bin derivation pulls pre-built binary from [ocis repo](https://github.com/owncloud/ocis).
 

@@ -4,6 +4,7 @@
   homepage = ./homepage.nix;
   hoyolab = ./hoyolab.nix;
   kes = ./kes.nix;
+  mcp-gateway = ./mcp-gateway.nix;
   ocis = ./ocis.nix;
   prometheus-exporters = import ./prometheus-exporters;
   rinetd = ./rinetd.nix;
