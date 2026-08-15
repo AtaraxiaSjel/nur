@@ -23,6 +23,7 @@ let
       a2ln = final.python3Packages.callPackage ./a2ln { };
       arkenfox-userjs = final.callPackage ./arkenfox-userjs { };
       bibata-cursors-tokyonight = final.callPackage ./bibata-cursors-tokyonight { };
+      cargo-doc-mcp = final.callPackage ./cargo-doc-mcp { };
       ceserver = final.callPackage ./ceserver { };
       endfield-daily = final.callPackage ./endfield-daily { };
       github-mcp-server = final.callPackage ./github-mcp-server { };
