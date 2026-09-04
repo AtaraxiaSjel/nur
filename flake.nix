@@ -5,6 +5,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     devenv.url = "github:cachix/devenv";
+    devenv.inputs.flake-parts.follows = "flake-parts";
     devenv-root = {
       url = "file+file:///dev/null";
       flake = false;
