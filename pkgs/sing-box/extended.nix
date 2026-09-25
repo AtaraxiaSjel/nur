@@ -9,26 +9,28 @@
   nixosTests,
   withCGO ? false,
 }:
-
+let
+  version = "1.14.1-extended-2.7.2";
+in
 import ./common.nix {
   inherit
     lib
     buildGoModule
-    fetchFromGitHub
     installShellFiles
     coreutils
     lld
     nix-update-script
     nixosTests
+    version
     withCGO
     ;
 
   pname = "sing-box-extended";
-  version = "1.14.1-extended-2.7.2";
   homepage = "https://github.com/shtorm-7/sing-box-extended";
-  src = {
+  src = fetchFromGitHub {
     owner = "shtorm-7";
     repo = "sing-box-extended";
+    tag = "v${version}";
     hash = "sha256-bDE90wcoTLBm3lDICO+z7Kl+hhIXBYZN5lsrLXQbL10=";
   };
   vendorHash = "sha256-fR6ZlkSBiM0EiGwd6mWQ07p+gMnYuhugai4x4SsUNiU=";

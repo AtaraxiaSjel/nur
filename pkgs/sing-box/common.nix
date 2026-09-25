@@ -1,10 +1,7 @@
 # Shared builder for all sing-box variants.
-# Wrappers in this directory only pass pname, version, src, vendorHash,
-# homepage, extraTags and updateExtraArgs.
 {
   lib,
   buildGoModule,
-  fetchFromGitHub,
   installShellFiles,
   coreutils,
   lld,
@@ -16,33 +13,8 @@
   src,
   vendorHash,
   homepage,
-  extraTags ? [ ],
-  updateExtraArgs ? null,
-  withCGO ? false,
-}:
-
-buildGoModule (finalAttrs: {
-  inherit pname version;
-
-  __structuredAttrs = true;
-
-  src = fetchFromGitHub {
-    inherit (src) owner repo hash;
-    tag = "v${finalAttrs.version}";
-  };
-
-  inherit vendorHash;
-
-  env = {
-    CGO_ENABLED = if withCGO then 1 else 0;
-  }
-  // lib.optionalAttrs withCGO {
-    # cronet's prebuilt static lib is only linkable with lld (bfd ld rejects
-    # the archive); same as upstream's `build-naive env` (CGO_LDFLAGS=-fuse-ld=lld)
-    CGO_LDFLAGS = "-fuse-ld=lld";
-  };
-
-  tags = [
+  description ? "Universal proxy platform",
+  baseTags ? [
     "with_gvisor"
     "with_quic"
     "with_grpc"
@@ -59,13 +31,37 @@ buildGoModule (finalAttrs: {
     "with_usbip"
     "with_openvpn"
     "with_openconnect"
-  ]
-  ++ extraTags
-  ++ [
-    "badlinkname"
-    "tfogo_checklinkname0"
-  ]
-  ++ lib.optionals withCGO [ "with_naive_outbound" ];
+  ],
+  extraTags ? [ ],
+  updateExtraArgs ? null,
+  withCGO ? false,
+}:
+
+buildGoModule (finalAttrs: {
+  inherit pname version;
+
+  __structuredAttrs = true;
+
+  inherit src;
+  inherit vendorHash;
+
+  env = {
+    CGO_ENABLED = if withCGO then 1 else 0;
+  }
+  // lib.optionalAttrs withCGO {
+    # cronet's prebuilt static lib is only linkable with lld (bfd ld rejects
+    # the archive); same as upstream's `build-naive env` (CGO_LDFLAGS=-fuse-ld=lld)
+    CGO_LDFLAGS = "-fuse-ld=lld";
+  };
+
+  tags =
+    baseTags
+    ++ extraTags
+    ++ [
+      "badlinkname"
+      "tfogo_checklinkname0"
+    ]
+    ++ lib.optionals withCGO [ "with_naive_outbound" ];
 
   subPackages = [
     "cmd/sing-box"
@@ -102,8 +98,7 @@ buildGoModule (finalAttrs: {
   };
 
   meta = {
-    inherit homepage;
-    description = "Universal proxy platform";
+    inherit homepage description;
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [ ataraxiasjel ];
     mainProgram = "sing-box";
