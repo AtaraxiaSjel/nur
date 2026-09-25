@@ -9,19 +9,19 @@
 }:
 
 buildGoModule (finalAttrs: {
-  pname = "sing-box-extended";
-  version = "1.14.1-extended-2.7.2";
+  pname = "sing-box";
+  version = "1.14.2";
 
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
-    owner = "shtorm-7";
-    repo = "sing-box-extended";
+    owner = "SagerNet";
+    repo = "sing-box";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-bDE90wcoTLBm3lDICO+z7Kl+hhIXBYZN5lsrLXQbL10=";
+    hash = "sha256-KoJj5nn0d7uxs5x4arG1p3KGkDmaFAJKiVJ5M5vYxcU=";
   };
 
-  vendorHash = "sha256-fR6ZlkSBiM0EiGwd6mWQ07p+gMnYuhugai4x4SsUNiU=";
+  vendorHash = "sha256-DJNYQeCgAouLvpA8caZ0ILi9RYV82wteV6tR3gj+sfI=";
 
   env = {
     CGO_ENABLED = 0;
@@ -37,6 +37,8 @@ buildGoModule (finalAttrs: {
     "with_acme"
     "with_clash_api"
     "with_v2ray_api"
+    # CGO required, enable separately with CGO_ENABLED=1
+    # "with_embedded_tor"
     "with_tailscale"
     "with_ccm"
     "with_ocm"
@@ -44,20 +46,6 @@ buildGoModule (finalAttrs: {
     "with_usbip"
     "with_openvpn"
     "with_openconnect"
-    # extended-specific, all non-CGO
-    "with_masque"
-    "with_mtproxy"
-    "with_trusttunnel"
-    "with_call"
-    "with_sudoku"
-    "with_manager"
-    # with_admin_panel needs service/admin_panel/dist generated via
-    # `make build_admin_panel` (npm + cmd/internal/admin_panel_pack),
-    # not checked into git. Wire up later with a frontend build.
-    # "with_admin_panel"
-    "with_profiler"
-    # CGO required, enable separately with CGO_ENABLED=1
-    # "with_embedded_tor"
     "badlinkname"
     "tfogo_checklinkname0"
   ];
@@ -95,7 +83,7 @@ buildGoModule (finalAttrs: {
   };
 
   meta = {
-    homepage = "https://github.com/shtorm-7/sing-box-extended";
+    homepage = "https://sing-box.sagernet.org";
     description = "Universal proxy platform";
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [ ataraxiasjel ];

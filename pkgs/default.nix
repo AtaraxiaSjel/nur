@@ -43,6 +43,7 @@ let
       seadrive-fuse = final.callPackage ./seadrive-fuse { };
       sing-box-beta = final.callPackage ./sing-box/beta.nix { };
       sing-box-extended = final.callPackage ./sing-box/extended.nix { };
+      sing-box-stable = final.callPackage ./sing-box/stable.nix { };
       stalker-gamma-cli = final.callPackage ./stalker-gamma-cli { };
       strudel = final.callPackage ./strudel { };
       strudel-with-server = final.strudel.override { withServer = true; };
