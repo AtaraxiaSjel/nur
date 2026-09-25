@@ -4,8 +4,10 @@
   fetchFromGitHub,
   installShellFiles,
   coreutils,
+  lld,
   nix-update-script,
   nixosTests,
+  withCGO ? false,
 }:
 
 buildGoModule (finalAttrs: {
@@ -21,10 +23,17 @@ buildGoModule (finalAttrs: {
     hash = "sha256-g456S8Pw9GYm0E48fNUAg840r+MinxKTpbcIzQKhniA=";
   };
 
+  # same for both variants: `go mod vendor` already includes tag-gated
+  # imports (e.g. cronet-go behind with_naive_outbound)
   vendorHash = "sha256-1xP8RLU0/ZP6j8DbNiPaI0Pnw6PpBNp2hsTTE4U+PWQ=";
 
   env = {
-    CGO_ENABLED = 0;
+    CGO_ENABLED = if withCGO then 1 else 0;
+  }
+  // lib.optionalAttrs withCGO {
+    # cronet's prebuilt static lib is only linkable with lld (bfd ld rejects
+    # the archive); same as upstream's `build-naive env` (CGO_LDFLAGS=-fuse-ld=lld)
+    CGO_LDFLAGS = "-fuse-ld=lld";
   };
 
   tags = [
@@ -37,8 +46,10 @@ buildGoModule (finalAttrs: {
     "with_acme"
     "with_clash_api"
     "with_v2ray_api"
-    # CGO required, enable separately with CGO_ENABLED=1
-    # "with_embedded_tor"
+    # NOTE: with_embedded_tor no longer exists in upstream code as of 1.15.0-alpha.8
+    # (only mentioned in docs), so with_naive_outbound is the only CGO-gated
+    # tag. In CGO mode cronet links against the prebuilt static lib shipped
+    # in the cronet-go/lib/* Go modules, no Chromium toolchain needed.
     "with_tailscale"
     "with_ccm"
     "with_ocm"
@@ -48,13 +59,14 @@ buildGoModule (finalAttrs: {
     "with_openconnect"
     "badlinkname"
     "tfogo_checklinkname0"
-  ];
+  ]
+  ++ lib.optionals withCGO [ "with_naive_outbound" ];
 
   subPackages = [
     "cmd/sing-box"
   ];
 
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles ] ++ lib.optionals withCGO [ lld ];
 
   ldflags = [
     "-X=github.com/sagernet/sing-box/constant.Version=${finalAttrs.version}"
