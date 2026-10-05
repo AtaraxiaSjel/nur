@@ -58,6 +58,8 @@ import ./common.nix {
   ];
   # tags carry full upstream history, only consider -lx releases
   updateExtraArgs = [
+    "--version"
+    "unstable"
     "--version-regex"
     "v(.*-lx\\..*)"
   ];
