@@ -80,9 +80,6 @@ let
         }
       )
     ];
-    # expose nur python packages
-    python-pkgs = lib.recurseIntoAttrs (final.python3Packages.callPackage ./python3Packages { });
-
     # Overrides
     # From PR: https://github.com/ValveSoftware/gamescope/pull/1908
     gamescope = prev.gamescope.overrideAttrs (oa: {
@@ -93,6 +90,9 @@ let
           hash = "sha256-Nagl95FbJgVSRbX/tW/+bsbyFHTLmU8KfF2WHylFuuY=";
         })
       ];
+      passthru = oa.passthru or { } // {
+        skipBulkUpdate = true;
+      };
     });
     gamescope-wsi = prev.gamescope-wsi.overrideAttrs (oa: {
       patches = oa.patches or [ ] ++ [
@@ -102,6 +102,9 @@ let
           hash = "sha256-Nagl95FbJgVSRbX/tW/+bsbyFHTLmU8KfF2WHylFuuY=";
         })
       ];
+      passthru = oa.passthru or { } // {
+        skipBulkUpdate = true;
+      };
     });
   };
 in
