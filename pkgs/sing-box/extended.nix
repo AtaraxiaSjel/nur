@@ -39,6 +39,8 @@ import ./common.nix {
     "unstable"
     "--version-regex"
     "v(.*-extended.*)"
+    "--override-filename"
+    "pkgs/sing-box/extended.nix"
   ];
   extraTags = [
     # extended-specific, all non-CGO

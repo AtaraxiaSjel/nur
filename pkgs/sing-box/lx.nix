@@ -62,5 +62,7 @@ import ./common.nix {
     "unstable"
     "--version-regex"
     "v(.*-lx\\..*)"
+    "--override-filename"
+    "pkgs/sing-box/lx.nix"
   ];
 }
