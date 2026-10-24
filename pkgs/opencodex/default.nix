@@ -8,13 +8,13 @@
 }:
 
 let
-  version = "2.91.0";
+  version = "2.92.0";
 
   src = fetchFromGitHub {
     owner = "lidge-jun";
     repo = "opencodex";
     rev = "v${version}";
-    hash = "sha256-Oj2t6jCUR3NQEWjhHZlmXY9zWhsN66be68cBPYQUQq0=";
+    hash = "sha256-uUOfqZkGotxlg39f323jk0JTrNqOhptHPVi7EyxQjtY=";
   };
 
   packageLock = ./package-lock.json;
@@ -27,7 +27,7 @@ let
     # The repo keeps frontend sources in gui/; the fetched tree's top dir is src.name.
     sourceRoot = "${src.name}/gui";
 
-    npmDepsHash = "sha256-moPMDXd3atuKQPAOBRFhk5HocKWFfKHdj0OZG5luWSQ=";
+    npmDepsHash = "sha256-sOGZ5lMtLrYhMkOH+PM3kxm4KBW9W9ZJZWa0gcpWQB8=";
 
     # npmConfigHook requires a package-lock.json at the source root; the repo
     # only ships bun.lock, so vendored lockfile is copied in.
@@ -53,7 +53,7 @@ buildNpmPackage {
   pname = "opencodex";
   inherit version src;
 
-  npmDepsHash = "sha256-N5fKQx+u4ZhxW26FGGIjUzwhuG09BlGRXY+C2cylSOY=";
+  npmDepsHash = "sha256-ak5xmjhoQbtr9plNmX/92cenXcBJCMzXuDboVqa6ArU=";
 
   # The root has no `build` script; TS runs directly under Bun.
   dontNpmBuild = true;
