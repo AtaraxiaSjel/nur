@@ -12,6 +12,8 @@
   jetbrains,
   suwayomi-webui,
   nix-update-script,
+  _experimental-update-script-combinators,
+  writeShellScript,
   electron,
   makeDesktopItem,
 
@@ -25,14 +27,14 @@ in
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "suwayomi-server";
-  version = "2.4.2366";
+  version = "2.4.2373";
 
   __structuredAttrs = true;
   src = fetchFromGitHub {
     owner = "Suwayomi";
     repo = "Suwayomi-Server";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-a54ltRYnCCemMFGbh8ENIc+PPautKwduV6hUcFJoMzI=";
+    hash = "sha256-yVoFA18/Trv3XOyCYCKc/DoudMsZhzw18VLNpltG1VI=";
   };
 
   patches = [
@@ -133,7 +135,18 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru = {
     inherit jetbrains suwayomi-webui;
-    updateScript = nix-update-script { };
+
+    # The mitm updater is a derivation baked from the tree at eval time, so it
+    # must not run directly after the version bump — it would capture deps for
+    # the pre-bump source. Re-evaluate `mitmCache.updateScript` instead so the
+    # deps.json is regenerated against whatever nix-update just wrote.
+    updateScript = _experimental-update-script-combinators.sequence [
+      (nix-update-script { })
+      (writeShellScript "suwayomi-server-update-gradle-deps" ''
+        script="$(nix build .#suwayomi-server.mitmCache.updateScript --no-link --print-out-paths)"
+        exec "$script"
+      '')
+    ];
   };
 
   meta = {
