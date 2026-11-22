@@ -40,17 +40,21 @@ mkProtonBin (finalAttrs: {
   };
 
   passthru = {
-    updateScript = writeShellApplication {
-      name = "update-proton-ge";
+    # nix-update executes this path directly — it must be the binary file,
+    # not the writeShellApplication derivation (which is a directory).
+    updateScript = "${
+      writeShellApplication {
+        name = "update-proton-ge";
 
-      runtimeInputs = [
-        curl
-        jq
-        common-updater-scripts
-      ];
+        runtimeInputs = [
+          curl
+          jq
+          common-updater-scripts
+        ];
 
-      text = builtins.readFile ./update.sh;
-    };
+        text = builtins.readFile ./update.sh;
+      }
+    }/bin/update-proton-ge";
   };
 
   meta = {

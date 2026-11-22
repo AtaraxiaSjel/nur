@@ -75,17 +75,21 @@ mkProtonBin (finalAttrs: {
 
   # Upstream tags releases as `cachyos-<version>-slr`.
   passthru = {
-    updateScript = writeShellApplication {
-      name = "update-proton-cachyos";
+    # nix-update executes this path directly — it must be the binary file,
+    # not the writeShellApplication derivation (which is a directory).
+    updateScript = "${
+      writeShellApplication {
+        name = "update-proton-cachyos";
 
-      runtimeInputs = [
-        curl
-        jq
-        common-updater-scripts
-      ];
+        runtimeInputs = [
+          curl
+          jq
+          common-updater-scripts
+        ];
 
-      text = builtins.readFile ./update.sh;
-    };
+        text = builtins.readFile ./update.sh;
+      }
+    }/bin/update-proton-cachyos";
     # The default package's update script updates every variant.
     skipBulkUpdate = variant == "x86_64_v3";
   };
