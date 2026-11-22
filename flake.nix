@@ -71,12 +71,15 @@
             };
           };
           devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              nix-update
-              nix-eval-jobs
-              nix-fast-build
-              jq
-            ];
+            packages =
+              with pkgs;
+              [
+                nix-eval-jobs
+                nix-fast-build
+                jq
+              ]
+              # nixpkgs' nix-update 1.16 is broken with nix 2.35 — use ours.
+              ++ [ (pkgs.callPackage ./pkgs/nix-update { }) ];
             # Install the git hooks into the repo.
             shellHook = config.pre-commit.shellHook;
           };

@@ -30,6 +30,7 @@ let
       lanotifica = final.callPackage ./lanotifica { };
       mcp-server-searxng = final.callPackage ./mcp-server-searxng { };
       mpris-ctl = final.callPackage ./mpris-ctl { };
+      nix-update = final.callPackage ./nix-update { };
       nix-update-docker-image = final.python3Packages.callPackage ./nix-update-docker-image { };
       prometheus-podman-exporter = final.callPackage ./prometheus/podman-exporter.nix { };
       proton-ge-bin = final.callPackage ./proton-ge-bin { };
