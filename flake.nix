@@ -52,20 +52,16 @@
               )
             ];
           };
-          # Get all packages from ci.nix.
           packages = (import ./ci.nix { inherit pkgs lib system; }).buildPkgs;
           checks = (import ./ci.nix { inherit pkgs lib system; }).cachePkgs;
           # Keep CI's checks == cachePkgs exactly (the module would otherwise
           # add a checks.pre-commit entry, which nix-fast-build would build).
           pre-commit.check.enable = false;
           pre-commit.settings = {
-            # prek instead of python pre-commit, same as devenv 2.x
             package = pkgs.prek;
             hooks = {
               actionlint.enable = true;
               deadnix.enable = true;
-              # Disabled temporarily, build failed
-              # flake-checker.enable = true;
               nixfmt.enable = true;
               ripsecrets.enable = true;
             };
@@ -78,9 +74,7 @@
                 nix-fast-build
                 jq
               ]
-              # nixpkgs' nix-update 1.16 is broken with nix 2.35 — use ours.
               ++ [ (pkgs.callPackage ./pkgs/nix-update { }) ];
-            # Install the git hooks into the repo.
             shellHook = config.pre-commit.shellHook;
           };
         };

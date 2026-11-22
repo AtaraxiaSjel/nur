@@ -43,11 +43,6 @@ buildPythonPackage rec {
     requests
   ];
 
-  # FIXME: tests
-  # nativeCheckInputs = [
-  #   pytestCheckHook
-  # ];
-
   passthru.updateScript = nix-update-script { };
 
   meta = with lib; {

@@ -44,7 +44,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   postPatch = ''
     # Pin the dynamic version vals (upstream computes them via `git rev-list`,
     # which has no .git in the nix sandbox and would yield v2.3.0/r0).
-    # Other vals in Constants.kt (e.g. webviewJbrRelease) are left intact.
     sed -i -E \
       -e 's|^val getTachideskVersion = .*|val getTachideskVersion = { "v${finalAttrs.version}" }|' \
       -e 's|^val webUIRevisionTag = .*|val webUIRevisionTag = "r${suwayomi-webui.revision}"|' \
@@ -136,10 +135,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   passthru = {
     inherit jetbrains suwayomi-webui;
 
-    # The mitm updater is a derivation baked from the tree at eval time, so it
-    # must not run directly after the version bump — it would capture deps for
-    # the pre-bump source. Re-evaluate `mitmCache.updateScript` instead so the
-    # deps.json is regenerated against whatever nix-update just wrote.
+    # mitmCache.updateScript is baked at eval time — must be re-run via
+    # `nix build` after the version bump to regenerate deps.json.
     updateScript = _experimental-update-script-combinators.sequence [
       (nix-update-script { })
       (writeShellScript "suwayomi-server-update-gradle-deps" ''

@@ -33,8 +33,6 @@ mkProtonBin (finalAttrs: {
   };
 
   passthru = {
-    # nix-update executes this path directly — it must be the binary file,
-    # not the writeShellApplication derivation (which is a directory).
     updateScript = "${
       writeShellApplication {
         name = "update-dwproton";

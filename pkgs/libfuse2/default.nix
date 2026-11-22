@@ -9,9 +9,8 @@
   runtimeShell,
 }:
 
-# libfuse 2.x has been removed from nixpkgs (fuse_2 = throw), but seadrive-fuse
-# still requires the libfuse2 API (FUSE_USE_VERSION 26) and upstream has no
-# fuse3 port. Vendored from nixpkgs' last fuse_2 expression (nixos-24.11).
+# Vendored from nixpkgs' last fuse_2 (nixos-24.11): seadrive-fuse needs
+# the libfuse2 API, which current nixpkgs no longer ships.
 stdenv.mkDerivation rec {
   pname = "libfuse2";
   version = "2.9.9";
@@ -66,10 +65,7 @@ stdenv.mkDerivation rec {
     # No need to use the SUID wrapper.
     substituteInPlace util/mount.fuse.c \
       --replace-fail '"su"' '"${lib.getBin shadow.su}/bin/su"'
-    # Upstream's makeconf.sh re-runs autoreconf without --force and copies
-    # gettext's config.rpath over the one autopoint already installed, which
-    # makes autopoint abort with "locally modified". autoreconfHook has
-    # already done everything, so just use its output.
+    # NB: upstream's makeconf.sh is deliberately not used — autoreconfHook covers it.
   '';
 
   # tests get skipped in a sandbox

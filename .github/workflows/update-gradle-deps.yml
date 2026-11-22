@@ -20,13 +20,8 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      # On PRs (e.g. the bot's flake-lock PR) push deps.json to the PR
-      # branch; on master pushes and manual runs commit on the default ref.
-      # The flake-bump PR auto-merges (gh pr merge --auto in update-flake.yml)
-      # and its branch is deleted as soon as checks pass; runs that start after
-      # that find no head_ref and checkout fails (every PR run since
-      # 2026-10-12). Skip instead — the push run on master regenerates
-      # deps.json right after the merge.
+      # On PRs push deps.json to the PR branch; on master pushes and manual runs commit
+      # on the default ref. If the PR branch is already merged and deleted, skip below.
       - id: branch-check
         if: github.event_name == 'pull_request'
         env:
@@ -52,7 +47,7 @@ jobs:
       - name: Regenerate Gradle deps.json
         if: github.event_name != 'pull_request' || steps.branch-check.outputs.exists == 'true'
         env:
-          # See auto-update.yml: bwrap fails on GitHub runners; pure hygiene wrapper.
+          # gradle's updater wraps gradle in bwrap, which GitHub runners can't run.
           USE_BWRAP: "0"
           NIXPKGS_ALLOW_UNFREE: "1"
           NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: "1"

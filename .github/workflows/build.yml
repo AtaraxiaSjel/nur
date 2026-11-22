@@ -24,7 +24,7 @@ jobs:
           - ataraxiadev-foss
         nixpkgs:
           - nixos-unstable # Unstable from flake.lock, updated weekly
-          - nixos-26.05 # Latest stable
+          - nixos-26.05
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -56,11 +56,8 @@ jobs:
       - name: Override nixpkgs in flake to latest stable
         if: ${{ matrix.nixpkgs != 'nixos-unstable' }}
         run: nix flake lock --override-input nixpkgs "github:nixos/nixpkgs/${{ matrix.nixpkgs }}"
-      # Provide the devShell tools (ci.sh helpers, nix-fast-build, ...) to the
-      # steps below
       - name: Add devShell tools to PATH
         run: |
-          # $PATH must expand inside the devShell, hence the single quotes
           # shellcheck disable=SC2016
           nix develop -c sh -c 'echo "$PATH"' | tr ':' '\n' >> "$GITHUB_PATH"
       - name: Show nixpkgs version
