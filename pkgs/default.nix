@@ -26,6 +26,7 @@ let
       hoyolab-claim-bot = final.callPackage ./hoyolab-claim-bot { };
       json-liquid-rs = final.callPackage ./json-liquid-rs { };
       kes = final.callPackage ./kes { };
+      libfuse2 = final.callPackage ./libfuse2 { };
       lanotifica = final.callPackage ./lanotifica { };
       mcp-server-searxng = final.callPackage ./mcp-server-searxng { };
       mpris-ctl = final.callPackage ./mpris-ctl { };
